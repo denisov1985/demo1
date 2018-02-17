@@ -1,0 +1,3 @@
+demo_test:
+    path: /demo_test
+    controller: App\Controller\DataController::demo

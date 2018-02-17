@@ -8,11 +8,20 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Routing\Annotation\Route;
 
 class DataController
 {
     public function demo()
     {
         die('it works');
+    }
+
+    /**
+     * @Route("/", name="data_test")
+     */
+    public function test()
+    {
+        die('it works test');
     }
 }
