@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    Hello from HI
+
+{% endblock %}
+
+{% block left_sidebar %}
+    hi from child
+    {{ parent() }}
+{% endblock %}
+
+{% block title %}Hi Page{% endblock %}

@@ -1,0 +1,3 @@
+ data_test                  ANY        ANY      ANY    /                     App\Controller\DataController::test
+  hello                      GET|POST   ANY      ANY    /hello/{name}                       App\Controller\DataController::hello
+  hello_int                  GET|POST   ANY      ANY    /hello/{name}                       App\Controller\DataController::helloInt

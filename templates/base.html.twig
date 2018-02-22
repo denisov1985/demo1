@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('/css/main.css') }}">
+        {% endblock %}
+        {% block javascripts %}
+            <script type="text/javascript" src="/build/js/app.js"></script>
+        {% endblock %}
+    </head>
+    <body>
+
+    {{ include('_partials/navbar.html.twig', {'name': 'Menu'}) }}
+
+    {{ render(controller(
+        'App\\Controller\\DataController::menu'
+    )) }}
+
+    {{ dump(app) }}
+
+    {% block left_sidebar %}
+        <div>sidebar</div>
+    {% endblock %}
+
+    {% block body %}{% endblock %}
+
+
+
+
+    {% block footer %}
+    <div>Footer</div>
+    {% endblock %}
+    </body>
+</html>
