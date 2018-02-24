@@ -8,6 +8,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
+use App\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,8 +41,24 @@ class DataController extends Controller
     public function index(Request $request)
     {
 
-        dump($request->get('test'));
-        dump($this);
+        $product = new Product();
+        $product->setName('BMW X5');
+        $product->setDescription('New car');
+        $product->setPrice(50000);
+        $product->setCreatedAt(new \DateTime());
+        $product->setUpdatedAt(new \DateTime());
+
+        $category = new Category();
+        $category->setName('Auto');
+
+        $product->setCategory($category);
+
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->persist($product);
+        $manager->persist($category);
+        $manager->flush();
+
         $title = 'News';
 
         return $this->render(
