@@ -19,16 +19,32 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-    /*
-    public function findBySomething($value)
+
+    public function findByCustom($value)
     {
         return $this->createQueryBuilder('p')
-            ->where('p.something = :value')->setParameter('value', $value)
+            ->join('p.category', 'category')
+            ->where('p.name = :value')
+            ->setParameter('value', $value)
             ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
+            ->setFirstResult(5)
+            ->getQuery()->getResult();
     }
-    */
+
+    public function getByPrice($price)
+    {
+        $em = $this->getEntityManager()->createQuery();
+
+        $query = $em->createQuery(
+            'SELECT p, c 
+                FROM App\Entity\Product p
+                JOIN p.category c
+                WHERE p.price > :price
+                ORDER BY p.price ASC'
+            )->setParameter('price', $price);
+
+        $query->getResult();
+    }
+
 }

@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+
+    {# form(form1) #}
+
+    {{ form_start(form1, {'attr': {'novalidate': 'novalidate'}}) }}
+
+    <div style="border-color: #AA3333">{{ form_row(form1.name) }}</div>
+
+    <div style="border-color: #AA3333">{{ form_row(form1.description) }}</div>
+
+    {{ form_end(form1) }}
+
+{% endblock %}
+
+{% block left_sidebar %}{% endblock %}

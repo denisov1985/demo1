@@ -10,7 +10,11 @@ namespace App\Controller;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use App\Entity\Tags;
+use App\Repository\ProductRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,6 +23,41 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DataController extends Controller
 {
+
+    /**
+     * @Route ("/form", name="form")
+     * @return string
+     */
+    public function form(Request $request)
+    {
+        $product = new Product();
+
+        $form = $this->createFormBuilder($product)
+            ->add('name')
+            ->add('description')
+            ->add('price')
+            ->add('createdAt', DateType::class)
+            ->add('Save Product', SubmitType::class)
+            ->getForm();
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($product);
+            $manager->flush();
+        }
+
+        dump($product);
+
+        return $this->render(
+            'data/form.html.twig',
+            [
+                'form1' => $form->createView()
+            ]
+        );
+    }
+
 
     public function menu(Request $request)
     {
@@ -40,23 +79,20 @@ class DataController extends Controller
      */
     public function index(Request $request)
     {
-
-        $product = new Product();
-        $product->setName('BMW X5');
-        $product->setDescription('New car');
-        $product->setPrice(50000);
-        $product->setCreatedAt(new \DateTime());
-        $product->setUpdatedAt(new \DateTime());
-
-        $category = new Category();
-        $category->setName('Auto');
-
-        $product->setCategory($category);
+        $tag = new Tags();
+        $tag->setName("cars");
 
         $manager = $this->getDoctrine()->getManager();
+        for ($i = 1; $i < 100; $i++) {
+            $product = new Product();
+            $product->setName('BMW X5');
+            $product->setDescription('New car');
+            $product->setPrice(50000);
+            $product->setCreatedAt(new \DateTime());
+            $product->setUpdatedAt(new \DateTime());
+            $manager->persist($product);
+        }
 
-        $manager->persist($product);
-        $manager->persist($category);
         $manager->flush();
 
         $title = 'News';
@@ -73,10 +109,23 @@ class DataController extends Controller
      * @Route ("/hi", name="hi")
      * @return string
      */
-    public function hi()
+    public function hi(ProductRepository $repo)
     {
-        return $this->render('data/hi.html.twig');
+
+        $product = $repo->findByCustom('Audi');
+
+        dump($product);
+
+
+
+        return $this->render('data/index.html.twig');
     }
+
+
+
+
+
+
 
 
     public function demo(
@@ -88,7 +137,7 @@ class DataController extends Controller
         echo $session->get('userId', '1');
 
         die('demo');
-      return $this->redirect('http://google.com');
+        return $this->redirect('http://google.com');
     }
 
     /**

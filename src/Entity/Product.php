@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Table(indexes={
  *     @ORM\Index(
  *     name="price_idx",
@@ -23,11 +26,13 @@ class Product
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
+     * @Assert\
      * @ORM\Column(type="integer")
      */
     private $price;
@@ -54,6 +59,20 @@ class Product
      * )
      */
     private $category;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Tags", inversedBy="products")
+     */
+    private $tags;
+
+
+    public function __construct()
+    {
+        $this->tags = new ArrayCollection();
+    }
+
+
+
     /**
      * @return mixed
      */
@@ -166,7 +185,29 @@ class Product
         $this->category = $category;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
 
+    /**
+     * @param $tag
+     */
+    public function addTag($tag): void
+    {
+        $this->tags[] = $tag;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     */
+    public function setUpdatedAtHook()
+    {
+        $this->updated_at = new \DateTime();
+    }
     // add your own fields
 
 

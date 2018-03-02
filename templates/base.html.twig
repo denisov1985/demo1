@@ -12,16 +12,7 @@
     </head>
     <body>
 
-    {{ include('_partials/navbar.html.twig', {'name': 'Menu'}) }}
-
-    {{ render(controller(
-        'App\\Controller\\DataController::menu'
-    )) }}
-
-    {{ dump(app) }}
-
     {% block left_sidebar %}
-        <div>sidebar</div>
     {% endblock %}
 
     {% block body %}{% endblock %}
