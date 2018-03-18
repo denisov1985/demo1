@@ -34,7 +34,7 @@ class ApiAuth extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return JsonResponse('error' => $e->getMessage())
+
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
