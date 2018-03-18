@@ -3,11 +3,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TagsRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ *
  */
-class Tags
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -17,17 +19,15 @@ class Tags
     private $id;
 
     // add your own fields
-
-
     /**
      * @ORM\Column(type="string")
      */
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Product", mappedBy="tags")
+     * @ORM\Column(type="string")
      */
-    private $products = [];
+    private $password;
 
     /**
      * @return mixed
@@ -64,16 +64,38 @@ class Tags
     /**
      * @return mixed
      */
-    public function getProducts()
+    public function getPassword()
     {
-        return $this->products;
+        return $this->password;
     }
 
     /**
-     * @param mixed $products
+     * @param mixed $password
      */
-    public function setProducts($products): void
+    public function setPassword($password): void
     {
-        $this->products = $products;
+        $this->password = $password;
     }
+
+    public function getRoles()
+    {
+        return ['ROLE_ADMIN', 'ROLE_BATMAN', 'ROLE_USER', 'ROLE_CAN_EDIT_POST'];
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function getUsername()
+    {
+        return $this->name;
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+
 }

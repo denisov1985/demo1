@@ -7,7 +7,9 @@
 
     {{ form_start(form1, {'attr': {'novalidate': 'novalidate'}}) }}
 
-    <div style="border-color: #AA3333">{{ form_row(form1.name) }}</div>
+    <div style="border-color: #AA3333">{{ form_row(form1.name, {attr: { class: 'test' }}) }}</div>
+
+    <div style="border-color: #AA3333">{{ form_row(form1.description) }}</div>
 
     <div style="border-color: #AA3333">{{ form_row(form1.description) }}</div>
 

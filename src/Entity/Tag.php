@@ -6,10 +6,10 @@ use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\TagRepository")
  * @ApiResource
  */
-class Category
+class Tag
 {
     /**
      * @ORM\Id
@@ -18,15 +18,13 @@ class Category
      */
     private $id;
 
+    // add your own fields
+
+
     /**
      * @ORM\Column(type="string")
      */
     private $name;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Post" , mappedBy="category")
-     */
-    private $posts = [];
 
     /**
      * @return mixed
@@ -60,30 +58,10 @@ class Category
         $this->name = $name;
     }
 
-
-    // add your own fields
-
     public function __toString()
     {
         return $this->name;
     }
-
-    /**
-     * @return mixed
-     */
-    public function getPosts()
-    {
-        return $this->posts;
-    }
-
-    /**
-     * @param mixed $posts
-     */
-    public function setPosts($posts): void
-    {
-        $this->posts = $posts;
-    }
-
 
 
 }

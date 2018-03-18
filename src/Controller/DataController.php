@@ -11,7 +11,9 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Entity\Tags;
+use App\Form\ProductType;
 use App\Repository\ProductRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -25,21 +27,13 @@ class DataController extends Controller
 {
 
     /**
-     * @Route ("/form", name="form")
+     * @Route ("/test", name="form")
      * @return string
      */
     public function form(Request $request)
     {
         $product = new Product();
-
-        $form = $this->createFormBuilder($product)
-            ->add('name')
-            ->add('description')
-            ->add('price')
-            ->add('createdAt', DateType::class)
-            ->add('Save Product', SubmitType::class)
-            ->getForm();
-
+        $form = $this->createForm(ProductType::class, $product);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -47,8 +41,6 @@ class DataController extends Controller
             $manager->persist($product);
             $manager->flush();
         }
-
-        dump($product);
 
         return $this->render(
             'data/form.html.twig',
@@ -58,9 +50,19 @@ class DataController extends Controller
         );
     }
 
-
     public function menu(Request $request)
     {
+
+        $product = new Product();
+
+        $form = $this->createFormBuilder($product)
+            ->add('name')
+            ->add('description')
+            ->add('price')
+            ->add('category')
+            ->add('createdAt', DateType::class)
+            ->add('Save Product', SubmitType::class)
+            ->getForm();
 
         $menu = [
             'News',
